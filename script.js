@@ -1,25 +1,24 @@
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modal-img");
+const modalVideo = document.getElementById("modal-video");
 const closeBtn = document.querySelector(".close");
 const prevBtn = document.querySelector(".prev");
 const nextBtn = document.querySelector(".next");
 const downloadLink = document.getElementById("download-link"); // ссылка "Скачать"
-const images = Array.from(document.querySelectorAll("img.clickable"));
-const videos = Array.from(document.querySelectorAll("video.clickable"));
-const modalVideo = document.getElementById("modal-video");
 
+// Единый массив всех медиа (фото и видео) в порядке на странице
+const media = Array.from(document.querySelectorAll('img.clickable, video.clickable'));
 let currentIndex = 0;
-let currentMedia = null;
 
 function updateModalMedia() {
-    // Определяем, что открывать: картинку или видео
-    if (images.includes(currentMedia)) {
+    const currentMedia = media[currentIndex];
+    if (currentMedia.tagName === 'IMG') {
         modalImg.style.display = "block";
         modalVideo.style.display = "none";
         modalImg.src = currentMedia.src;
         downloadLink.href = currentMedia.src;
         downloadLink.setAttribute("download", `image_${currentIndex + 1}.jpeg`);
-    } else if (videos.includes(currentMedia)) {
+    } else if (currentMedia.tagName === 'VIDEO') {
         modalImg.style.display = "none";
         modalVideo.style.display = "block";
         modalVideo.src = currentMedia.src;
@@ -28,57 +27,25 @@ function updateModalMedia() {
     }
 }
 
-function openModal(index, type) {
+function openModal(index) {
     currentIndex = index;
-    if (type === 'image') {
-        currentMedia = images[index];
-    } else {
-        currentMedia = videos[index];
-    }
     updateModalMedia();
     modal.style.display = "block";
 }
 
 function showNext() {
-    let arr = images.includes(currentMedia) ? images : videos;
-    currentIndex = (currentIndex + 1) % arr.length;
-    currentMedia = arr[currentIndex];
+    currentIndex = (currentIndex + 1) % media.length;
     updateModalMedia();
 }
 
 function showPrev() {
-    let arr = images.includes(currentMedia) ? images : videos;
-    currentIndex = (currentIndex - 1 + arr.length) % arr.length;
-    currentMedia = arr[currentIndex];
+    currentIndex = (currentIndex - 1 + media.length) % media.length;
     updateModalMedia();
 }
 
-// Открытие при клике на фото
-images.forEach((img, index) => {
-    img.addEventListener("click", () => openModal(index, 'image'));
-});
-videos.forEach((vid, index) => {
-    vid.addEventListener("click", () => openModal(index, 'video'));
-});
-
-// Создание превью для видео
-videos.forEach(video => {
-    video.addEventListener('loadedmetadata', function() {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        
-        // Берём кадр из середины видео
-        const middle = video.duration / 2;
-        video.currentTime = middle;
-        
-        video.addEventListener('seeked', function() {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const posterUrl = canvas.toDataURL('image/jpeg');
-            video.poster = posterUrl;
-        }, { once: true });
-    });
+// Навешиваем обработчики на все медиа
+media.forEach((el, index) => {
+    el.addEventListener("click", () => openModal(index));
 });
 
 // Закрытие
@@ -91,11 +58,29 @@ modal.onclick = (event) => {
 nextBtn.onclick = showNext;
 prevBtn.onclick = showPrev;
 
-// Стрелки клавиатуры
 document.addEventListener("keydown", (e) => {
     if (modal.style.display === "block") {
         if (e.key === "ArrowRight") showNext();
         if (e.key === "ArrowLeft") showPrev();
         if (e.key === "Escape") modal.style.display = "none";
     }
+});
+
+// Создание превью для видео (оставляем как было)
+const videos = Array.from(document.querySelectorAll("video.clickable"));
+videos.forEach(video => {
+    video.addEventListener('loadedmetadata', function() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        // Берём кадр из середины видео
+        const middle = video.duration / 2;
+        video.currentTime = middle;
+        video.addEventListener('seeked', function() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const posterUrl = canvas.toDataURL('image/jpeg');
+            video.poster = posterUrl;
+        }, { once: true });
+    });
 });
