@@ -64,14 +64,14 @@ videos.forEach((vid, index) => {
 // Создание превью для видео
 videos.forEach(video => {
     video.addEventListener('loadedmetadata', function() {
-        // Создаем canvas для извлечения первого кадра
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         
-        // Устанавливаем время на 0.1 секунды для получения первого кадра
-        video.currentTime = 0.1;
+        // Берём кадр из середины видео
+        const middle = video.duration / 2;
+        video.currentTime = middle;
         
         video.addEventListener('seeked', function() {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
