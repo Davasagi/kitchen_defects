@@ -84,3 +84,17 @@ videos.forEach(video => {
         }, { once: true });
     });
 });
+
+// Прокрутка мыши для перелистывания медиа (горизонтальный скролл)
+modal.addEventListener('wheel', function(e) {
+    if (modal.style.display === "block") {
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { // реагируем только на горизонтальный скролл
+            e.preventDefault();
+            if (e.deltaX > 0) {
+                showNext();
+            } else if (e.deltaX < 0) {
+                showPrev();
+            }
+        }
+    }
+}, { passive: false });
