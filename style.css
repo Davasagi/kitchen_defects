@@ -58,7 +58,9 @@ img.clickable:hover, video.clickable:hover {
 
 /* Модальное окно */
 .modal {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     z-index: 100;
     left: 0;
@@ -71,7 +73,7 @@ img.clickable:hover, video.clickable:hover {
 
 .modal-content {
     display: block;
-    margin: 5% auto;
+    margin: 0;
     max-width: 90%;
     max-height: 80%;
     box-shadow: 0 0 20px black;
@@ -139,6 +141,11 @@ td, th {
 
 .download-btn:hover {
     background: #ddd;
+}
+
+body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
 }
 
 
