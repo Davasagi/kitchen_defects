@@ -98,3 +98,24 @@ modal.addEventListener('wheel', function(e) {
         }
     }
 }, { passive: false });
+
+// Свайп для мобильных устройств
+let touchStartX = null;
+modal.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+    }
+});
+modal.addEventListener('touchend', function(e) {
+    if (touchStartX === null) return;
+    let touchEndX = e.changedTouches[0].clientX;
+    let dx = touchEndX - touchStartX;
+    if (Math.abs(dx) > 40) { // порог для свайпа
+        if (dx < 0) {
+            showNext();
+        } else {
+            showPrev();
+        }
+    }
+    touchStartX = null;
+});
