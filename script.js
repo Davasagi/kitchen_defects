@@ -31,7 +31,6 @@ function openModal(index) {
     currentIndex = index;
     updateModalMedia();
     modal.style.display = "block";
-    document.body.classList.add('modal-open');
 }
 
 function showNext() {
@@ -50,15 +49,9 @@ media.forEach((el, index) => {
 });
 
 // Закрытие
-closeBtn.onclick = () => {
-    modal.style.display = "none";
-    document.body.classList.remove('modal-open');
-};
+closeBtn.onclick = () => modal.style.display = "none";
 modal.onclick = (event) => {
-    if (event.target === modal) {
-        modal.style.display = "none";
-        document.body.classList.remove('modal-open');
-    }
+    if (event.target === modal) modal.style.display = "none";
 };
 
 // Навигация
@@ -69,10 +62,7 @@ document.addEventListener("keydown", (e) => {
     if (modal.style.display === "block") {
         if (e.key === "ArrowRight") showNext();
         if (e.key === "ArrowLeft") showPrev();
-        if (e.key === "Escape") {
-            modal.style.display = "none";
-            document.body.classList.remove('modal-open');
-        }
+        if (e.key === "Escape") modal.style.display = "none";
     }
 });
 

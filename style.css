@@ -34,33 +34,32 @@ img {
     margin-right: 10px;
 }
 
-img.clickable, video.clickable {
+img.clickable {
+    cursor: zoom-in;
+    transition: 0.3s;
+}
+
+img.clickable:hover {
+    opacity: 0.8;
+}
+
+video.clickable {
     cursor: zoom-in;
     transition: 0.3s;
     max-width: 100px;
-    max-height: 100px;
-    height: 100px;
-    width: 100px;
+    height: auto;
     margin-right: 10px;
     display: inline-block;
     vertical-align: middle;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    background: #eee;
 }
 
-img.clickable:hover, video.clickable:hover {
+video.clickable:hover {
     opacity: 0.8;
-    transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
 }
 
 /* Модальное окно */
 .modal {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
     position: fixed;
     z-index: 100;
     left: 0;
@@ -73,7 +72,7 @@ img.clickable:hover, video.clickable:hover {
 
 .modal-content {
     display: block;
-    margin: 0;
+    margin: 5% auto;
     max-width: 90%;
     max-height: 80%;
     box-shadow: 0 0 20px black;
@@ -141,11 +140,6 @@ td, th {
 
 .download-btn:hover {
     background: #ddd;
-}
-
-body.modal-open {
-    overflow: hidden !important;
-    touch-action: none;
 }
 
 
