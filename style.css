@@ -142,7 +142,6 @@ td, th {
     background: #ddd;
 }
 
-
 img.clickable, video.clickable {
     cursor: zoom-in;
     transition: 0.3s;
@@ -163,4 +162,9 @@ img.clickable:hover, video.clickable:hover {
     opacity: 0.8;
     transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
 }
